@@ -13,3 +13,5 @@ build-binary-linux-amd64:
 	env GOOS=linux GOARCH=amd64 go build --ldflags=${LDFLAGS} -o ${BINARY}-linux-amd64
 build-binary-linux-arm64:
 	env GOOS=linux GOARCH=arm64 go build --ldflags=${LDFLAGS} -o ${BINARY}-linux-arm64
+build-binary-darwin-arm64:
+	env GOOS=darwin GOARCH=arm64 go build --ldflags=${LDFLAGS} -o ${BINARY}-darwin-arm64
