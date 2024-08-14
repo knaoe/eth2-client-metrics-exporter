@@ -304,17 +304,17 @@ func getSystemData(ts uint64) (*SystemData, error) {
 	}
 	systemData.CPUCores = int64(cpuCores)
 
-	cpuTimes, err := cpu.Times(false)
-	if err != nil {
-		return nil, fmt.Errorf("failed getting cpu times: %w", err)
-	}
-	for _, t := range cpuTimes {
-		systemData.CPUNodeIdleSecondsTotal += uint64(t.Idle)
-		systemData.CPUNodeUserSecondsTotal += uint64(t.User)
-		systemData.CPUNodeIOWaitSecondsTotal += uint64(t.Iowait)
-		// note: currently beaconcha.in expects this to be everything
-		systemData.CPUNodeSystemSecondsTotal += uint64(t.System) + uint64(t.Iowait) + uint64(t.User) + uint64(t.Idle)
-	}
+	// cpuTimes, err := cpu.Times(false)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed getting cpu times: %w", err)
+	// }
+	// for _, t := range cpuTimes {
+	// 	systemData.CPUNodeIdleSecondsTotal += uint64(t.Idle)
+	// 	systemData.CPUNodeUserSecondsTotal += uint64(t.User)
+	// 	systemData.CPUNodeIOWaitSecondsTotal += uint64(t.Iowait)
+	// 	// note: currently beaconcha.in expects this to be everything
+	// 	systemData.CPUNodeSystemSecondsTotal += uint64(t.System) + uint64(t.Iowait) + uint64(t.User) + uint64(t.Idle)
+	// }
 
 	memStat, err := mem.VirtualMemory()
 	if err != nil {
@@ -353,16 +353,16 @@ func getSystemData(ts uint64) (*SystemData, error) {
 		logrus.WithFields(logrus.Fields{"path": mostUsedPartStat.Path, "usedPercent": mostUsedPartStat.UsedPercent, "totalBytes": mostUsedPartStat.Total, "freeBytes": mostUsedPartStat.Free}).Infof("highest disk usage: %2.f%%", mostUsedPartStat.UsedPercent)
 	}
 
-	ioCounters, err := disk.IOCounters()
-	if err != nil {
-		return nil, fmt.Errorf("failed getting disk io counterss: %w", err)
-	}
-	for _, c := range ioCounters {
-		_ = c
-		systemData.DiskNodeIOSeconds = c.IoTime
-		systemData.DiskNodeReadsTotal = c.ReadCount   // c.MergedReadCount ?
-		systemData.DiskNodeWritesTotal = c.WriteCount // c.MergedWriteCount ?
-	}
+	// ioCounters, err := disk.IOCounters()
+	// if err != nil {
+	// 	return nil, fmt.Errorf("failed getting disk io counterss: %w", err)
+	// }
+	// for _, c := range ioCounters {
+	// 	_ = c
+	// 	systemData.DiskNodeIOSeconds = c.IoTime
+	// 	systemData.DiskNodeReadsTotal = c.ReadCount   // c.MergedReadCount ?
+	// 	systemData.DiskNodeWritesTotal = c.WriteCount // c.MergedWriteCount ?
+	// }
 
 	netCounters, err := net.IOCounters(false)
 	if err != nil {
